@@ -7,9 +7,12 @@ AUTHOR: Simone Brazioli
 
 
 import pysftp
+import lib.os_control as osctl
+from os import remove
 
 
-def send_file(source, destination, username, hostname, key_path):
+
+def send_file_sftp(source, destination, username, hostname, key_path):
     """
     This function allows to send file to remote host.
     :source: String path
@@ -26,7 +29,29 @@ def send_file(source, destination, username, hostname, key_path):
         sftp.put(source)
 
 
-def get_file(source, destination, username, hostname, key_path):
+def send_file_rsync(source, destination, username, hostname, key_path):
+    """
+    This function allows to rsync two remote folders. For now, you have to specify a destination without last folder.
+    In the future, a check will be added to remove the last folder (maybe, if it is the same as the last folder of source.
+    """
+    base_command = "rsync"
+    options = "-aP"
+    folder = source
+    dest = username + "@" + hostname + ":" + destination
+    full_command = base_command + " " + options + " " + folder + " " + dest
+    output = osctl.exec_command(full_command)
+    return output
+
+
+def get_file_rsync(source, destination, username, hosntame, key_path):
+    """
+    For now, this function seems useless
+    """
+    print("useless function")
+    return None
+
+
+def get_file_sftp(source, destination, username, hostname, key_path):
     """
     This function allows to get file from remote host.
     :source: String path
