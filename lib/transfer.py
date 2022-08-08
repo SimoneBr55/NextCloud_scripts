@@ -29,26 +29,45 @@ def send_file_sftp(source, destination, username, hostname, key_path):
         sftp.put(source)
 
 
-def send_file_rsync(source, destination, username, hostname, key_path):
+def send_file_rsync(source, destination, username, hostname, key_path=None, port=None):
     """
     This function allows to rsync two remote folders. For now, you have to specify a destination without last folder.
-    In the future, a check will be added to remove the last folder (maybe, if it is the same as the last folder of source.
+    In the future, a check will be added to remove the last folder (maybe, if it is the same as the last folder of source).
+    This is the subroutine to send FROM local TO remote
     """
     base_command = "rsync"
+    if key_path is None:
+        key_path = '/root/.ssh/id_rsa'
+    if port is None:
+        port = 22
+    subcommand = " 'ssh -i " + key_path + " -p " + str(port) + " ' "
     options = "-aP"
     folder = source
     dest = username + "@" + hostname + ":" + destination
-    full_command = base_command + " " + options + " " + folder + " " + dest
+    full_command = base_command + subcommand + options + " " + folder + " " + dest
     output = osctl.exec_command(full_command)
     return output
 
 
-def get_file_rsync(source, destination, username, hosntame, key_path):
+def get_file_rsync(source, destination, username, hostname, key_path=None, port=None):
     """
-    For now, this function seems useless
+    This function allows to rsync two remote folders. For now, you have to specify a destination without last folder.
+    In the future, a check will be added to remove the last folder (maybe, if it is the same as the last folder of source).
+    This is the subroutine to send FROM remote TO local
     """
-    print("useless function")
-    return None
+    base_command = "rsync"
+    if key_path is None:
+        key_path = '/root/.ssh/id_rsa'
+    if port is None:
+        port = 22
+    subcommand = " 'ssh -i " + key_path + " -p " + str(port) + " ' "
+    options = "-aP"
+    folder = source
+    folder = username + "@" + hostname + ":" + source
+    dest = destination
+    full_command = base_command + subcommand + options + " " + folder + " " + dest
+    output = osctl.exec_command(full_command)
+    return output
 
 
 def get_file_sftp(source, destination, username, hostname, key_path):
@@ -61,7 +80,8 @@ def get_file_sftp(source, destination, username, hostname, key_path):
     :key_path: local SSH key used to connect
     """
 
-    sftp = pysftp.Connection(host=hostname, username=username, private_key=key_path)
+    # sftp = pysftp.Connection(host=hostname, username=username, private_key=key_path)
 
-    with sftp.cd(destination):
-        sftp.get(source)
+    # with sftp.cd(destination):
+    #    sftp.get(source)
+    return None

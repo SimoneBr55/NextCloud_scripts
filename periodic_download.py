@@ -36,9 +36,9 @@ if DEBUG:
     print(dirs)
     print(creds)
 
-# now in dirs, i have `source,destination` as each entry of the list
+# now in dirs, I have `source,destination` as each entry of the list
 
-# now i have to iterate through dirs, to separate source and destination and work on those
+# now I have to iterate through dirs, to separate source and destination and work on those
 
 for operation in dirs:
     source, destination = operation.split(',')
