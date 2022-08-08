@@ -65,6 +65,7 @@ def get_file_rsync(source, destination, username, hostname, key_path=None, port=
     folder = username + "@" + hostname + ":" + source
     dest = destination
     full_command = base_command + subcommand + options + " " + folder + " " + dest
+    print(full_command)
     output = osctl.exec_command(full_command)
     return output
 
