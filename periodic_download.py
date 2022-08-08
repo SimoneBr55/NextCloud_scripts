@@ -11,6 +11,7 @@ from shutil import rmtree
 DEBUG = True
 RSYNC = True
 
+check = open('/tmp/check_upload', 'w')
 
 # style of creds:
 # [0] -> username
@@ -66,8 +67,9 @@ for operation in dirs:
         print("SRC: " + os.path.basename(source) + " - DEST: " + os.path.basename(destination))
         print("SRC: " + os.path.dirname(source) + " - DEST: " + os.path.dirname(destination))
     osctl.exec_command("chown -R www-data:www-data " + destination + "/" + os.path.basename(source))
+    check.write(source)
 
-osctl.exec_command("nc-scan simone")
-Path('/tmp/check_upload').touch()  # could be useful to insert the timedate here
-# transfer.send_file_sftp('/tmp/check_upload', '/tmp', username, hostname, loc_key)  # not useful bc i exchanged roles
+# osctl.exec_command("nc-scan simone")
+
+transfer.send_file_sftp('/tmp/check_upload', '/tmp', username, hostname, loc_key, port)
 

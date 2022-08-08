@@ -6,7 +6,7 @@ from time import sleep
 
 FILE = '/tmp/check_upload'
 while not exists(FILE):
-  sleep(5)
+    sleep(5)
 
 # if I am here, it means that the python uploader has created the check file
 # let's wait some more time
