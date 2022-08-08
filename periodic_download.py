@@ -72,5 +72,7 @@ for operation in dirs:
 check.close()
 # osctl.exec_command("nc-scan simone")
 
-transfer.send_file_sftp('/tmp/check_upload', '/tmp', username, hostname, loc_key, port)
+#transfer.send_file_sftp('/tmp/check_upload', '/tmp', username, hostname, loc_key, port)
+
+os.remove('/tmp/check_upload')
 
