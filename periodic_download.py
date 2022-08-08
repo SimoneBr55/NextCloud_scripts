@@ -50,12 +50,12 @@ for operation in dirs:
         # maybe there's a bug hidden here
         destination = os.path.dirname(destination)
     if RSYNC:
-        transfer.get_file_rsync(source, destination, username, hostname, loc_key)
+        transfer.get_file_rsync(source, destination, username, hostname, loc_key, port)
         # we will not delete these, since we are using rsync here, the folder will be kept in sync
     else:
         # to simplify (and speed up) the process i am going to tarball and gzip them
         new_location = osctl.compress(source)
-        transfer.send_file_sftp(new_location, destination, username, hostname, loc_key)
+        transfer.send_file_sftp(new_location, destination, username, hostname, loc_key, port)
         # now we have to delete the `.tar.gz`
         remove(new_location)
         # still undecided if removing the original folder/file is something wise
