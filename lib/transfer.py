@@ -11,7 +11,6 @@ import lib.os_control as osctl
 from os import remove
 
 
-
 def send_file_sftp(source, destination, username, hostname, key_path=None, port=None):
     """
     This function allows to send file to remote host.
