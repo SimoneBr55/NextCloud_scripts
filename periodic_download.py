@@ -16,6 +16,7 @@ RSYNC = True
 # [0] -> username
 # [1] -> hostname
 # [2] -> location of key
+# [3] -> SSH Port
 creds = []  # in second version implement a dictionary, to prevent wrong order
 with open("./list_creds.txt", "r") as file:
     for line in file:
@@ -66,6 +67,7 @@ for operation in dirs:
         print("SRC: " + os.path.dirname(source) + " - DEST: " + os.path.dirname(destination))
     osctl.exec_command("chown -R www-data:www-data " + destination + "/" + os.path.basename(source))
 
+osctl.exec_command("nc-scan simone")
 Path('/tmp/check_upload').touch()  # could be useful to insert the timedate here
 # transfer.send_file_sftp('/tmp/check_upload', '/tmp', username, hostname, loc_key)  # not useful bc i exchanged roles
 

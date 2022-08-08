@@ -12,7 +12,7 @@ from os import remove
 
 
 
-def send_file_sftp(source, destination, username, hostname, key_path):
+def send_file_sftp(source, destination, username, hostname, key_path=None, port=None):
     """
     This function allows to send file to remote host.
     :source: String path
@@ -22,8 +22,13 @@ def send_file_sftp(source, destination, username, hostname, key_path):
     :key_path: local SSH key used to connect
     """
 
+    if key_path is None:
+        key_path = "/root/.ssh/id_rsa"
+    if port is None:
+        port = 22
+
     # start the connection
-    sftp = pysftp.Connection(host=hostname, username=username, private_key=key_path)
+    sftp = pysftp.Connection(host=hostname, username=username, private_key=key_path, port=port)
 
     with sftp.cd(destination):
         sftp.put(source)
@@ -70,7 +75,7 @@ def get_file_rsync(source, destination, username, hostname, key_path=None, port=
     return output
 
 
-def get_file_sftp(source, destination, username, hostname, key_path):
+def get_file_sftp(source, destination, username, hostname, key_path=None, port=None):
     """
     This function allows to get file from remote host.
     :source: String path
