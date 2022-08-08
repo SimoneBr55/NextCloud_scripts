@@ -69,6 +69,7 @@ for operation in dirs:
     osctl.exec_command("chown -R www-data:www-data " + destination + "/" + os.path.basename(source))
     check.write(source)
 
+check.close()
 # osctl.exec_command("nc-scan simone")
 
 transfer.send_file_sftp('/tmp/check_upload', '/tmp', username, hostname, loc_key, port)
