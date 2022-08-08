@@ -25,6 +25,7 @@ with open("./list_creds.txt", "r") as file:
 username = creds[0]
 hostname = creds[1]
 loc_key = creds[2]
+port = creds[3]
 
 dirs = []  # init list of folders to send over
 with open("./list_sync.txt", "r") as file:
@@ -49,7 +50,7 @@ for operation in dirs:
         # maybe there's a bug hidden here
         destination = os.path.dirname(destination)
     if RSYNC:
-        transfer.send_file_rsync(source, destination, username, hostname, loc_key)
+        transfer.get_file_rsync(source, destination, username, hostname, loc_key)
         # we will not delete these, since we are using rsync here, the folder will be kept in sync
     else:
         # to simplify (and speed up) the process i am going to tarball and gzip them
@@ -61,5 +62,5 @@ for operation in dirs:
         # rmtree(source)
 
 Path('/tmp/check_upload').touch()  # could be useful to insert the timedate here
-transfer.send_file_sftp('/tmp/check_upload', '/tmp', username, hostname, loc_key)
+# transfer.send_file_sftp('/tmp/check_upload', '/tmp', username, hostname, loc_key)  # not useful bc i exchanged roles
 
