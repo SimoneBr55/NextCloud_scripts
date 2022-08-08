@@ -8,7 +8,7 @@ from os import remove  # can be discarded in favour of the following command
 from shutil import rmtree
 
 
-DEBUG = False
+DEBUG = True
 RSYNC = True
 
 
