@@ -60,6 +60,10 @@ for operation in dirs:
         remove(new_location)
         # still undecided if removing the original folder/file is something wise
         # rmtree(source)
+    print(source + destination)
+    print(os.path.basename(source) + os.path.basename(destination))
+    print(os.path.dirname(source) + os.path.dirname(destination))
+#osctl.exec_command("chown -R www-data:www-data " + destination)
 
 Path('/tmp/check_upload').touch()  # could be useful to insert the timedate here
 # transfer.send_file_sftp('/tmp/check_upload', '/tmp', username, hostname, loc_key)  # not useful bc i exchanged roles
