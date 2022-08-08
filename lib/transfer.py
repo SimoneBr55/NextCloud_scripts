@@ -60,7 +60,7 @@ def get_file_rsync(source, destination, username, hostname, key_path=None, port=
         key_path = '/root/.ssh/id_rsa'
     if port is None:
         port = 22
-    subcommand = " 'ssh -i " + key_path + " -p " + str(port) + " ' "
+    subcommand = " -e 'ssh -i " + key_path + " -p " + str(port) + " ' "
     options = "-aP"
     folder = username + "@" + hostname + ":" + source
     dest = destination
