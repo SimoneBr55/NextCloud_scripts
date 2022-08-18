@@ -66,7 +66,7 @@ for operation in dirs:
         print("SRC: " + source + " - DEST: " + destination)
         print("SRC: " + os.path.basename(source) + " - DEST: " + os.path.basename(destination))
         print("SRC: " + os.path.dirname(source) + " - DEST: " + os.path.dirname(destination))
-    osctl.exec_command("chown -R www-data:www-data " + destination + "/" + os.path.basename(source))
+    # osctl.exec_command("chown -R www-data:www-data " + destination + "/" + os.path.basename(source))  # temp
     check.write(source)
 
 check.close()
