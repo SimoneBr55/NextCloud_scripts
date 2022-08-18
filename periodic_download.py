@@ -1,15 +1,22 @@
 #!/usr/bin/python
+import time
 
 import lib.transfer as transfer
 import lib.os_control as osctl
 import os
+import time
+import lib.private_functions as private
+import lib.logger as log
+
 from pathlib import Path
 from os import remove  # can be discarded in favour of the following command
 from shutil import rmtree
 
+ident = log.begin("Periodic Download")
 
 DEBUG = True
 RSYNC = True
+MANAGED = True
 
 check = open('/tmp/check_upload', 'w')
 
@@ -18,32 +25,41 @@ check = open('/tmp/check_upload', 'w')
 # [1] -> hostname
 # [2] -> location of key
 # [3] -> SSH Port
-creds = []  # in second version implement a dictionary, to prevent wrong order
-with open("./list_creds.txt", "r") as file:
-    for line in file:
-        line = line.strip()
-        creds.append(line)
 
-username = creds[0]
-hostname = creds[1]
-loc_key = creds[2]
-port = creds[3]
 
-dirs = []  # init list of folders to send over
-with open("./list_sync.txt", "r") as file:
-    for line in file:
-        line = line.strip()
-        dirs.append(line)
+username = private.creds[0]
+hostname = private.creds[1]
+loc_key = private.creds[2]
+port = private.creds[3]
+
+if MANAGED:
+    server_status = private.ping(hostname)
+    if not server_status:
+        status = private.wakeonlan(hostname)
+        if status != 1:
+            log.error(ident, status)
+            exit(SystemError)
+        iter = 0
+        server_status = private.ping(hostname)
+        while server_status != True and iter <= 6:
+            server_status = private.ping(hostname)
+            iter += 1
+            time.sleep(10)
+        if iter > 6:
+            log.error(ident, "Server has not booted up")
+            exit(SystemError)
+        time.sleep(10)
+
 
 if DEBUG:
-    print(dirs)
-    print(creds)
+    print(private.dirs)
+    print(private.creds)
 
 # now in dirs, I have `source,destination` as each entry of the list
 
 # now I have to iterate through dirs, to separate source and destination and work on those
 
-for operation in dirs:
+for operation in private.dirs:
     source, destination = operation.split(',')
 
     # I now have a source and a destination strings
@@ -70,6 +86,12 @@ for operation in dirs:
     check.write(source)
 
 check.close()
+
+if MANAGED:
+    status = private.halt(hostname)
+    if status != 1:
+        log.error(ident, status)
+
 # osctl.exec_command("nc-scan simone")
 
 #transfer.send_file_sftp('/tmp/check_upload', '/tmp', username, hostname, loc_key, port)
