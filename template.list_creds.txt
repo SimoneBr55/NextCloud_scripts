@@ -1,0 +1,3 @@
+username
+fqdn
+/root/.ssh/id_rsa
