@@ -1,0 +1,2 @@
+/folder/you/want/to/backup,/folder/inwhich/youwant/the/backup/tobe/in
+/other/folder,/other/folder/in
